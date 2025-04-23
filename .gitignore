@@ -363,7 +363,7 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # Local secrets & sensitive configs
-appsettings.Development.json
+/OA.Web/appsettings.Development.json
 
 # Migrations (Comment out if you want to keep them)
 OA.Repo/Migrations/*
