@@ -15,6 +15,11 @@ namespace OA.Repo
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            foreach (var entity in modelBuilder.Model.GetEntityTypes())
+            {
+                entity.SetAnnotation("Relational:Schema", "Test");
+            }
         }
     }
 }
