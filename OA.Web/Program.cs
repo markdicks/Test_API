@@ -17,6 +17,23 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 
+/// Extra services
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "My Test API",
+        Version = "v1",
+        Description = "An example API for users and profiles",
+        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+        {
+            Name = "Mark Dicks",
+            Email = "markdicks03@gmail.com"
+        }
+    });
+});
+
+
 
 var app = builder.Build();
 
@@ -27,6 +44,11 @@ if (!app.Environment.IsDevelopment())
     /// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+else
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -36,5 +58,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+app.MapControllers();
 
 app.Run();
