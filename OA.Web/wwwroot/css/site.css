@@ -15,7 +15,7 @@
     color: var(--text-color);
 }
 
-body.light-mode {
+html.light-mode {
     --bg-color: #ffffff;
     --text-color: #111111;
     --card-bg: #f9f9f9;
@@ -23,7 +23,7 @@ body.light-mode {
     --neon-glow: none;
 }
 
-body.dark-mode {
+html.dark-mode {
     --bg-color: #0d1117;
     --text-color: #ffffff;
     --card-bg: rgba(10, 10, 10, 0.85);
@@ -68,11 +68,11 @@ a, .btn {
 }
 
 .neon-box .card-body{
-    z-index: 2;
-}
+        z-index: 2;
+    }
 
 /* DIMMED NEON BORDER ON DARK MODE */
-body.dark-mode .neon-box::before {
+html.dark-mode .neon-box::before {
     content: '';
     position: absolute;
     top: -2px;
@@ -129,12 +129,12 @@ body.dark-mode .neon-box::before {
         transition: all 0.4s ease-in-out;
     }
 
-body.light-mode #themeToggle::before {
+html.light-mode #themeToggle::before {
     box-shadow: 0 0 0 8px var(--bg-color);
     transform: scale(1);
 }
 
-body.dark-mode #themeToggle::before {
+html.dark-mode #themeToggle::before {
     box-shadow: inset -8px -8px 0px var(--bg-color);
     transform: scale(0.9);
 }
