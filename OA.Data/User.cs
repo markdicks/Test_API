@@ -15,10 +15,6 @@ namespace OA.Data
 
         #region Navigation Properties
 
-        public virtual UserProfile UserProfile { get; set; }
-
         #endregion
     }
 }
-
-

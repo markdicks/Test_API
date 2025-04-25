@@ -1,0 +1,54 @@
+﻿@page
+@model OA.Web.Pages.AppsModel
+@{
+    ViewData["Title"] = "Explore Apps";
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4 text-center display-4">Explore Our Apps</h1>
+    <p class="text-center lead mb-5">Try out a curated set of applications built to showcase our platform and APIs.</p>
+
+    <!-- Filter/Search -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-6">
+            <input type="text" class="form-control" placeholder="Search apps..." onkeyup="filterApps(this.value)">
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4" id="appsGrid">
+        @foreach (var app in Model.AppList)
+        {
+            <div class="col app-card" data-name="@app.Name.ToLower()">
+                <div class="card h-100 shadow-sm border-0 transition">
+                    <div class="card-body">
+                        <h5 class="card-title">@app.Name</h5>
+                        <p class="card-text">@app.Description</p>
+                        <a href="@app.Url" class="btn btn-outline-primary">Launch App</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .transition {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+        .transition:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+</style>
+
+<script>
+    function filterApps(query) {
+        query = query.toLowerCase();
+        const cards = document.querySelectorAll('.app-card');
+        cards.forEach(card => {
+            const name = card.getAttribute('data-name');
+            card.style.display = name.includes(query) ? 'block' : 'none';
+        });
+    }
+</script>

@@ -46,15 +46,7 @@ namespace OA.Web.Controllers
                 Email = dto.Email,
                 Password = dto.Password,
                 AddedDate = now,
-                ModifiedDate = now,
-                UserProfile = new UserProfile
-                {
-                    FirstName = dto.UserProfile.FirstName,
-                    LastName = dto.UserProfile.LastName,
-                    Address = dto.UserProfile.Address,
-                    AddedDate = now,
-                    ModifiedDate = now
-                }
+                ModifiedDate = now
             };
 
             _userService.InsertUser(user);
@@ -62,13 +54,7 @@ namespace OA.Web.Controllers
             {
                 Id = user.Id,
                 UserName = user.UserName,
-                Email = user.Email,
-                UserProfile = new UserProfileDto
-                {
-                    FirstName = user.UserProfile.FirstName,
-                    LastName = user.UserProfile.LastName,
-                    Address = user.UserProfile.Address
-                }
+                Email = user.Email
             });
 
         }
@@ -87,14 +73,6 @@ namespace OA.Web.Controllers
             existingUser.UserName = dto.UserName;
             existingUser.Email = dto.Email;
             existingUser.ModifiedDate = now;
-
-            if (existingUser.UserProfile != null && dto.UserProfile != null)
-            {
-                existingUser.UserProfile.FirstName = dto.UserProfile.FirstName;
-                existingUser.UserProfile.LastName = dto.UserProfile.LastName;
-                existingUser.UserProfile.Address = dto.UserProfile.Address;
-                existingUser.UserProfile.ModifiedDate = now;
-            }
 
             _userService.UpdateUser(existingUser);
 
