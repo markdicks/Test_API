@@ -18,7 +18,7 @@
 html.light-mode {
     --bg-color: #ffffff;
     --text-color: #111111;
-    --card-bg: #f9f9f9;
+    --card-bg: #D3D3D3;
     --accent-color: #007bff;
     --neon-glow: none;
 }
@@ -26,7 +26,7 @@ html.light-mode {
 html.dark-mode {
     --bg-color: #0d1117;
     --text-color: #ffffff;
-    --card-bg: rgba(10, 10, 10, 0.85);
+    --card-bg: rgba(10, 10, 10, 0.7);
     --accent-color: #00ffe7;
     --neon-glow: 0 0 6px #00ffe755, 0 0 14px #0077ff33;
 }
