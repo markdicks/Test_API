@@ -12,9 +12,9 @@ namespace OA.Web.Pages
             {
                 new AppInfo
                 {
-                    Name = "App One",
-                    Description = "A feature-rich demo that shows how to authenticate users and fetch data in real time.",
-                    Url = "/apps/app-one"
+                    Name = "Remote Desktop Connection",
+                    Description = "Able to connect to another computer remotely. Validation done through the API.",
+                    Url = "https://github.com/markdicks/RemoteDesktopWPF"
                 },
                 new AppInfo
                 {
