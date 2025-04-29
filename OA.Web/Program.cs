@@ -1,13 +1,20 @@
 using Microsoft.EntityFrameworkCore;
 using OA.Repo;
 using OA.Service;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionLocal = builder.Configuration.GetConnectionString("ConStrLocal");
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .Enrich.FromLogContext()
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 /// Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddMvc();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionLocal ?? throw new InvalidOperationException("Connection string invalid")));
@@ -33,6 +40,17 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", policy =>
+    {
+        policy.WithOrigins("https://localhost:7067", "https://localhost:7191") // Adjust origin
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials();
+    });
+});
+
 
 
 var app = builder.Build();
@@ -50,11 +68,12 @@ else
     app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseCors("CorsPolicy");
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapRazorPages();

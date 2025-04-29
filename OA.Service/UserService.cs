@@ -36,8 +36,8 @@ namespace OA.Service
 
         public void DeleteUser(long id)
         {
-            UserProfile userProfile = _userProfileRepository.Get(id);
-            _userProfileRepository.Remove(userProfile);
+            //UserProfile userProfile = _userProfileRepository.Get(id);
+            //_userProfileRepository.Remove(userProfile);
             User user = GetUser(id);
             _userRepository.Remove(user);
             _userRepository.SaveChanges();
