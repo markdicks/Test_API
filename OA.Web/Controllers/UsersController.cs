@@ -49,7 +49,15 @@ namespace OA.Web.Controllers
                 _logger.LogWarning("Invalid model state for user creation.");
                 return BadRequest(ModelState);
             }
-            _logger.LogInformation("Creating new user with username: {UserName}", dto.UserName);
+            _logger.LogInformation("Attempting to create user with username: {UserName}", dto.UserName);
+
+            // Check for duplicate username
+            var existingUser = _userService.GetUsers().FirstOrDefault(u => u.UserName == dto.UserName);
+            if (existingUser != null)
+            {
+                _logger.LogWarning("User creation failed. Username '{UserName}' already exists.", dto.UserName);
+                return Conflict(new { message = $"Username '{dto.UserName}' is already taken." });
+            }
 
             var now = DateTime.UtcNow;
 
@@ -70,7 +78,6 @@ namespace OA.Web.Controllers
                 UserName = user.UserName,
                 Email = user.Email
             });
-
         }
 
         [HttpPut("{id}")]
