@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using OA.Data;
 using OA.Service;
 using OA.Web.Dtos;
@@ -39,6 +40,39 @@ namespace OA.Web.Controllers
             }
             _logger.LogInformation("User with ID {UserId} found: {UserName}", id, user.UserName);
             return Ok(user);
+        }
+
+        [HttpGet("username/{username}")]
+        public IActionResult GetUserByUsername(string username)
+        {
+            _logger.LogInformation("Fetching user with username {UserName}", username);
+            var user = _userService.GetUserByUsername(username);
+            if (user == null)
+            {
+                _logger.LogWarning("User with username {UserName} not found", username);
+                return NotFound();
+            }
+
+            var userDto = new UserDto
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Password = user.Password                
+            };
+
+            if (user.Profile != null)
+            {
+                userDto.UserProfile = new UserProfileDto
+                {
+                    FirstName = user.Profile.FirstName,
+                    LastName = user.Profile.LastName,
+                    Address = user.Profile.Address
+                };
+            }
+            _logger.LogInformation("User {UserName} found with ID: {UserID}", username, user.Id);
+            return Ok(userDto);
+
         }
 
         [HttpPost]
@@ -83,7 +117,8 @@ namespace OA.Web.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateUser(long id, [FromBody] UpdateUserDto dto)
         {
-            _logger.LogInformation("Updating user with ID {UserId}", id);
+            _logger.LogInformation("Updating user with ID {UserId}. Request payload: {RequestPayload}", id, JsonConvert.SerializeObject(dto));
+
             var existingUser = _userService.GetUser(id);
             if (existingUser == null)
             {
@@ -91,16 +126,54 @@ namespace OA.Web.Controllers
                 return NotFound();
             }
 
-
             var now = DateTime.UtcNow;
-            
-            // Map updated fields
-            existingUser.UserName = dto.UserName;
-            existingUser.Email = dto.Email;
+
+            // Validate the request (you can add specific validation logic here)
+            if (dto.UserProfile != null && string.IsNullOrWhiteSpace(dto.UserProfile.FirstName) && string.IsNullOrWhiteSpace(dto.UserProfile.LastName))
+            {
+                _logger.LogWarning("User profile update request for user ID {UserId} has invalid user profile.", id);
+                return BadRequest("User profile cannot be empty.");
+            }
+
+            // Update scalar fields
+            if (!string.IsNullOrWhiteSpace(dto.UserName))
+            {
+                existingUser.UserName = dto.UserName;
+                _logger.LogInformation("Updated UserName for user ID {UserId}.", id);
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.Email))
+            {
+                existingUser.Email = dto.Email;
+                _logger.LogInformation("Updated Email for user ID {UserId}.", id);
+            }
+
+            // Update profile fields individually
+            if (dto.UserProfile != null)
+            {
+                if (existingUser.Profile == null)
+                    existingUser.Profile = new UserProfile();
+
+                existingUser.Profile.FirstName = dto.UserProfile.FirstName ?? existingUser.Profile.FirstName;
+                existingUser.Profile.LastName = dto.UserProfile.LastName ?? existingUser.Profile.LastName;
+                existingUser.Profile.Address = dto.UserProfile.Address ?? existingUser.Profile.Address;
+
+                _logger.LogInformation("Updated Profile fields for user ID {UserId}. FirstName: {FirstName}, LastName: {LastName}, Address: {Address}",
+                    id, existingUser.Profile.FirstName, existingUser.Profile.LastName, existingUser.Profile.Address);
+            }
+
             existingUser.ModifiedDate = now;
 
-            _userService.UpdateUser(existingUser);
-            _logger.LogInformation("User with ID {UserId} updated successfully.", id);
+            try
+            {
+                _userService.UpdateUser(existingUser);
+                _logger.LogInformation("User with ID {UserId} updated successfully.", id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error updating user with ID {UserId}: {ExceptionMessage}", id, ex.Message);
+                return StatusCode(500, "Internal server error");
+            }
 
             return NoContent();
         }

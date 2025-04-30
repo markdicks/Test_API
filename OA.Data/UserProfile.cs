@@ -1,5 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace OA.Data
 {
@@ -13,7 +14,12 @@ namespace OA.Data
 
         public string Address { get; set; }
 
-        [ForeignKey("Id")]
+        // Foreign Key
+        public long UserId { get; set; }
+
+        // Navigation back to User
+        [ForeignKey("UserId")]
+        [JsonIgnore]
         public virtual User User { get; set; }
 
         #region Navigation Properties

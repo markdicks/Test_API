@@ -13,7 +13,7 @@ namespace OA.Data
         [Required]
         public string Password { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public virtual UserProfile Profile { get; set; }
 
         #region Navigation Properties
 

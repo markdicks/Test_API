@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OA.Data;
+using System.Linq.Expressions;
 
 namespace OA.Repo
 {
@@ -22,6 +23,10 @@ namespace OA.Repo
         public T Get(long id)
         {
             return entities.SingleOrDefault(s => s.Id == id);
+        }
+        public T Find(Expression<Func<T, bool>> predicate)
+        {
+            return entities.FirstOrDefault(predicate);
         }
         public void Insert(T entity)
         {

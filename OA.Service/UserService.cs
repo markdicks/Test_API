@@ -25,6 +25,11 @@ namespace OA.Service
             return _userRepository.Get(id);
         }
 
+        public User GetUserByUsername(string username)
+        {
+            return _userRepository.Find(u => u.UserName == username);
+        }
+
         public void InsertUser(User user)
         {
             _userRepository.Insert(user);
