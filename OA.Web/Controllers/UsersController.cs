@@ -162,7 +162,13 @@ namespace OA.Web.Controllers
             if (dto.UserProfile != null)
             {
                 if (existingUser.Profile == null)
-                    existingUser.Profile = new UserProfile();
+                {
+                    existingUser.Profile = new UserProfile
+                    {
+                        Id = existingUser.Id,
+                        AddedDate = now
+                    };
+                }
 
                 existingUser.Profile.FirstName = dto.UserProfile.FirstName ?? existingUser.Profile.FirstName;
                 existingUser.Profile.LastName = dto.UserProfile.LastName ?? existingUser.Profile.LastName;

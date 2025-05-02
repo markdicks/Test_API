@@ -23,7 +23,7 @@ namespace OA.Service
 
         public User GetUser(long id)
         {
-            return _userRepository.Get(id);
+            return _userRepository.Query().Include(u => u.Profile).FirstOrDefault(u => u.Id == id);
         }
 
         public User GetUserByUsername(string username)
