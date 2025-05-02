@@ -20,6 +20,12 @@ namespace OA.Repo
             {
                 entity.SetAnnotation("Relational:Schema", "Test");
             }
+
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Profile)
+                .WithOne(p => p.User)
+                .HasForeignKey<UserProfile>(p => p.Id);
+
         }
     }
 }

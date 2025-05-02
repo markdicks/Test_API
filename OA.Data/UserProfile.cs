@@ -6,6 +6,9 @@ namespace OA.Data
 {
     public class UserProfile : BaseEntity
     {
+        [Key, ForeignKey("User")]
+        public new long Id { get; set; }  /// "new" hides the inherited Id
+
         [Required]
         public string FirstName { get; set; }
 
@@ -14,16 +17,7 @@ namespace OA.Data
 
         public string Address { get; set; }
 
-        // Foreign Key
-        public long UserId { get; set; }
-
-        // Navigation back to User
-        [ForeignKey("UserId")]
         [JsonIgnore]
         public virtual User User { get; set; }
-
-        #region Navigation Properties
-
-        #endregion
     }
 }

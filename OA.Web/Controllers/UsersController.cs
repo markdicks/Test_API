@@ -103,6 +103,16 @@ namespace OA.Web.Controllers
                 AddedDate = now,
                 ModifiedDate = now
             };
+            if (dto.UserProfile != null) {
+                user.Profile = new UserProfile
+                {
+                    FirstName = dto.UserProfile.FirstName ?? "",
+                    LastName = dto.UserProfile.LastName ?? "",
+                    Address = dto.UserProfile.Address ?? "",
+                    AddedDate = now,
+                    ModifiedDate = now
+                };
+            }
 
             _userService.InsertUser(user);
             _logger.LogInformation("User created successfully with ID {UserId}", user.Id);
@@ -157,6 +167,7 @@ namespace OA.Web.Controllers
                 existingUser.Profile.FirstName = dto.UserProfile.FirstName ?? existingUser.Profile.FirstName;
                 existingUser.Profile.LastName = dto.UserProfile.LastName ?? existingUser.Profile.LastName;
                 existingUser.Profile.Address = dto.UserProfile.Address ?? existingUser.Profile.Address;
+                existingUser.Profile.ModifiedDate = now;
 
                 _logger.LogInformation("Updated Profile fields for user ID {UserId}. FirstName: {FirstName}, LastName: {LastName}, Address: {Address}",
                     id, existingUser.Profile.FirstName, existingUser.Profile.LastName, existingUser.Profile.Address);
