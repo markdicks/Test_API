@@ -119,3 +119,6 @@ OA.Repo/Migrations/*
 ## 📌 License
 
 MIT © [Mark Dicks](https://github.com/markdicks)
+
+## Status
+![Alt](https://repobeats.axiom.co/api/embed/ce19d8d6e335d8b0074dfc2db32053fa1b245a34.svg "Repobeats analytics image")
