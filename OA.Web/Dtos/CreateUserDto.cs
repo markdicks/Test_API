@@ -24,19 +24,6 @@ namespace OA.Web.Dtos
 
         public string? Password { get; set; }
 
-        public UpdateUserProfileDto? UserProfile { get; set; }
+        public UserProfileDto? UserProfile { get; set; }
     }
-
-    public class UpdateUserProfileDto
-    {
-        [Required]
-        public string FirstName { get; set; }
-
-        [Required]
-        public string LastName { get; set; }
-
-        public string Address { get; set; }
-    }
-
-
 }
