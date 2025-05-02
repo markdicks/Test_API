@@ -14,6 +14,7 @@ namespace OA.Repo
         IEnumerable<T> GetAll();
         T Get(long id);
         T Find(Expression<Func<T, bool>> predicate);
+        IQueryable<T> Query();
         void Insert(T entity);
         void Update(T entity);
         void Delete(T entity);

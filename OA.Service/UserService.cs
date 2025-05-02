@@ -1,4 +1,5 @@
-﻿using OA.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using OA.Data;
 using OA.Repo;
 using System.Collections.Generic;
 
@@ -27,7 +28,10 @@ namespace OA.Service
 
         public User GetUserByUsername(string username)
         {
-            return _userRepository.Find(u => u.UserName == username);
+            return _userRepository
+            .Query()
+            .Include(u => u.Profile)
+            .FirstOrDefault(u => u.UserName == username);
         }
 
         public void InsertUser(User user)

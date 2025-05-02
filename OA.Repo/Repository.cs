@@ -28,6 +28,12 @@ namespace OA.Repo
         {
             return entities.FirstOrDefault(predicate);
         }
+
+        public IQueryable<T> Query()
+        {
+            return entities.AsQueryable();
+        }
+
         public void Insert(T entity)
         {
             if (entity == null)
